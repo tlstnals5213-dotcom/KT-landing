@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TECH UP | 실무 중심의 Product Design</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --red: #F4281F;
+    --black: #121212;
+    --dark-navy: #0D1030;
+    --gray-900: #1A1A1A;
+    --gray-700: #4A4A4A;
+    --gray-600: #848484;
+    --gray-300: #D9D9D9;
+    --gray-100: #F5F5F5;
+    --blue: #0030BB;
+    --magenta: #D000D4;
+    --purple: #521AAD;
+    --white: #ffffff;
+    --max: 1200px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--black);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  button{font-family:inherit; cursor:pointer; border:none;}
+  .wrap{max-width: var(--max); margin: 0 auto; padding: 0 24px;}
+  .eyebrow{
+    color: var(--red);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 12px;
+  }
+  .eyebrow.light{ color: rgba(255,255,255,0.55); }
+  h2.section-title{
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+  .center{ text-align:center; }
+  .btn-red{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:320px;
+    background: var(--red);
+    color: var(--white);
+    font-weight:600;
+    font-size: 17px;
+    padding: 14px 40px;
+    border-radius: 8px;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .btn-red:hover{ background:#d81f17; transform: translateY(-1px); }
+
+  /* ===== HEADER ===== */
+  header{
+    position: sticky; top:0; z-index:100;
+    background: var(--white);
+    border-bottom: 1px solid #eee;
+  }
+  .header-inner{
+    max-width: var(--max); margin:0 auto; padding: 0 24px;
+    height:68px; display:flex; align-items:center; justify-content:space-between;
+  }
+  .logo{ font-weight:800; font-size:20px; letter-spacing:-0.03em; display:flex; align-items:center; }
+  .logo svg{ height:24px; width:auto; }
+  nav.main-nav{ margin-left: auto; margin-right: 20px; }
+  nav.main-nav ul{ display:flex; gap:32px; font-size:15px; font-weight:500; }
+  nav.main-nav a{ display:flex; align-items:center; gap:8px; }
+  nav.main-nav a svg{ width:16px; height:16px; }
+  nav.main-nav a:hover{ color: var(--red); }
+  .header-cta{
+    display:flex; align-items:center; gap:22px; font-size:14px; font-weight:500; color:#555; justify-content:flex-end;
+  }
+  .header-cta .btn-red{ width:auto; min-width:88px; padding:9px 20px; font-size:14px; border-radius:6px; background:#000; white-space:nowrap; }
+  .header-cta .btn-red:hover{ background:#333; }
+  .burger{ display:none; }
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;
+    background: var(--black);
+    overflow:hidden;
+    padding: 56px 0 44px;
+  }
+  .sphere{
+    position:absolute;
+    bottom: -40px; right: -20px;
+    width: 529px; height: 517px;
+    object-fit: contain;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+    pointer-events: none;
+    z-index: 1;
+  }
+  .hero-inner{ position:relative; z-index:2; }
+  .hero-tags{ position:relative; height:0; z-index:10; }
+  .tag{
+    position:absolute;
+    padding: 3px 12px;
+    border-radius:4px;
+    font-size:14px;
+    color:#fff;
+    white-space:nowrap;
+  }
+  .tag::after{
+    content:"";
+    position:absolute; width:10px; height:10px;
+    transform: rotate(45deg);
+    bottom:-4px; left:16px;
+  }
+  .tag.t-ai{ background: var(--blue); top:-160px; left:-80px; }
+  .tag.t-ai::after{ background: var(--blue); }
+  .tag.t-ux{ background: var(--magenta); top:-100px; right:-120px; left: auto; }
+  .tag.t-ux::after{ background: var(--magenta); }
+  .tag.t-ds{ background: var(--purple); top:120px; right:-140px; left: auto; }
+  .tag.t-ds::after{ background: var(--purple); }
+
+  .hero-eyebrow{ color:rgba(255,255,255,0.8); font-size:18px; font-weight:600; margin-bottom:10px;}
+  .hero h1{
+    color:#fff;
+    font-size:44px;
+    font-weight:700;
+    line-height:1.28;
+    letter-spacing:-0.02em;
+    margin-bottom:28px;
+    max-width:600px;
+  }
+  .hero-info{
+    margin-top:56px;
+    display:grid;
+    grid-template-columns: auto auto;
+    row-gap:40px;
+    column-gap:40px;
+  }
+  .hero-info dt{
+    display:flex; align-items:center; gap:8px;
+    color:#fff; font-size:15px; font-weight:600; margin-bottom:6px;
+  }
+  .hero-info dt .ico{
+    width:18px; height:18px; flex:none;
+  }
+  .hero-info dt.ico-clock .ico{
+    background: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.60896 15.0615C4.20693 14.0909 4 13.0506 4 12C4 9.87827 4.84285 7.84344 6.34315 6.34315C7.84344 4.84285 9.87827 4 12 4C14.1217 4 16.1566 4.84285 17.6569 6.34315C19.1571 7.84344 20 9.87827 20 12C20 13.0506 19.7931 14.0909 19.391 15.0615C18.989 16.0321 18.3997 16.914 17.6569 17.6569C16.914 18.3997 16.0321 18.989 15.0615 19.391C14.0909 19.7931 13.0506 20 12 20C10.9494 20 9.90914 19.7931 8.93853 19.391C7.96793 18.989 7.08601 18.3997 6.34315 17.6569C5.60028 16.914 5.011 16.0321 4.60896 15.0615Z" stroke="%23848484" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 7.55554V12L14.6667 14.6667" stroke="%23848484" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>') no-repeat center;
+    background-size: contain;
+  }
+  .hero-info dt.ico-money .ico{
+    background: url('data:image/svg+xml;utf8,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.5C6.76166 2.5 2.5 6.76165 2.5 12C2.5 17.2383 6.76166 21.5 12 21.5C17.2383 21.5 21.5 17.2383 21.5 12C21.5 6.76165 17.2383 2.5 12 2.5ZM12 3.90741C16.4777 3.90741 20.0926 7.52228 20.0926 12C20.0926 16.4777 16.4777 20.0926 12 20.0926C7.5223 20.0926 3.90741 16.4777 3.90741 12C3.90741 7.52228 7.5223 3.90741 12 3.90741ZM12 6.72222C11.6113 6.72222 11.2963 7.03727 11.2963 7.42593V7.84375C10.8324 7.93404 10.4076 8.11835 10.0538 8.40451C9.52729 8.83036 9.18519 9.50502 9.18519 10.2407C9.18519 11.0418 9.65959 11.6799 10.1858 12C10.7119 12.32 11.2636 12.4621 11.7361 12.6487C12.3824 12.9055 13.4031 13.1302 13.4074 13.7593C13.4074 14.0894 13.2871 14.2976 13.0556 14.485C12.824 14.6722 12.4581 14.8148 12 14.8148C11.2764 14.8148 10.7219 14.3596 10.4937 13.9792C10.3037 13.6625 9.84266 13.5473 9.52606 13.7373C9.20936 13.9272 9.09416 14.3882 9.28413 14.7049C9.66648 15.3421 10.3742 15.9262 11.2963 16.1343V16.5741C11.2963 16.9627 11.6113 17.2778 12 17.2778C12.3887 17.2778 12.7037 16.9627 12.7037 16.5741V16.1562C13.1678 16.0627 13.5922 15.8708 13.9462 15.5845C14.4727 15.1586 14.8148 14.4949 14.8148 13.7593C14.8148 12.9581 14.3404 12.3091 13.8142 11.989C13.2881 11.6689 12.7364 11.5269 12.2639 11.3403C11.6225 11.0843 10.5968 10.8575 10.5926 10.2407C10.5926 9.9106 10.7129 9.6914 10.9444 9.50407C11.176 9.31674 11.5419 9.18519 12 9.18519C12.7236 9.18519 13.2781 9.62944 13.5063 10.0099C13.6963 10.3265 14.1573 10.4418 14.4739 10.2518C14.7906 10.0618 14.9058 9.60079 14.7159 9.28414C14.3335 8.6469 13.6258 8.07098 12.7037 7.86574V7.42593C12.7037 7.03727 12.3887 6.72222 12 6.72222Z" fill="%23848484"/></svg>') no-repeat center;
+    background-size: contain;
+  }
+  .hero-info dd{ color: var(--gray-600); font-size:15px; }
+  .hero-info dd small{ opacity:0.7; }
+
+  .hero-bottom-card{
+    position: relative;
+    z-index: 2;
+    margin-top:44px;
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius:20px;
+    padding: 22px 28px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:24px;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .hero-bottom-card > p{
+    color:#fff; font-size:18px; font-weight:600; line-height:1.4;
+  }
+  .capstack{ display:flex; flex-wrap:wrap; gap:28px; }
+  .cap-item{ width:110px; text-align:center; }
+  .cap-item .cap-icon{
+    width:56px; height:56px; margin:0 auto 8px;
+    border-radius:50%;
+    background: rgba(255,255,255,0.08);
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px;
+  }
+  .cap-item .cap-icon svg{
+    width:24px; height:24px;
+  }
+  .cap-item p{ color:#fff; font-size:13px; font-weight:600; line-height:1.35; }
+
+  /* ===== TAB NAV ===== */
+  .tabnav{
+    position: sticky; top: 68px; z-index: 99;
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .tabnav ul{
+    display:flex; gap:36px; justify-content:center; overflow-x:auto;
+    max-width: var(--max); margin:0 auto; padding: 0 24px;
+  }
+  .tabnav a{
+    display:block; padding:18px 2px;
+    color: rgba(255,255,255,0.55);
+    font-size:15px; font-weight:600;
+    border-bottom:2px solid transparent;
+    white-space:nowrap;
+  }
+  .tabnav a.active{ color:#fff; border-bottom-color: var(--red); }
+
+  /* ===== SECTION GENERIC ===== */
+  section{ padding: 96px 0; }
+  section.tight{ padding: 72px 0; }
+
+  /* ===== PROBLEM SECTION ===== */
+  .problem-head{ margin-bottom:44px; text-align:left; }
+  .problem-head .eyebrow{ color: #F4281F; }
+  .problem-head h2{ font-size:30px; font-weight:700; line-height:1.4; color: #ffffff; }
+  .problem-wrap{ background: #141417; padding: 56px 0; margin: 0 -24px; }
+  .problem-grid{
+    display:flex; flex-direction:column; gap:16px; max-width:900px; margin:0 auto; align-items:flex-end;
+  }
+  .problem-card{
+    background: #2a2a31;
+    border-radius:24px;
+    padding: 20px 28px;
+    font-size:16px; font-weight:500; color:#ffffff;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 56px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    white-space: nowrap;
+  }
+
+  /* ===== CORE SKILLS (navy) ===== */
+  .skills-section{
+    background: var(--dark-navy);
+    color:#fff;
+    text-align:center;
+  }
+  .skills-section .eyebrow{ color:#ff6b63; }
+  .skills-section h2{
+    color:#fff; font-size:32px; font-weight:700; line-height:1.5; margin-bottom:40px;
+  }
+  .pill-row{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:14px;
+    margin-bottom:40px;
+  }
+  .pill{
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-size:15px; font-weight:600;
+  }
+  .avatar-wrap{
+    width:220px; height:220px; margin: 0 auto 40px;
+    border-radius:50%;
+    background: linear-gradient(160deg,#e9c9a3,#c98b5e);
+    display:flex; align-items:center; justify-content:center;
+    font-size:70px;
+  }
+  .kt-lockup{
+    display:flex; flex-direction:column; align-items:center; gap:16px; margin-bottom:40px;
+  }
+  .kt-logo{
+    background:#fff; color:#e6007e; font-weight:800; font-size:26px;
+    padding:10px 22px; border-radius:8px; letter-spacing:-0.02em;
+  }
+  .kt-lockup h3{ font-size:24px; font-weight:700; }
+  .check-grid{
+    display:grid; grid-template-columns: repeat(2,1fr); gap:14px; text-align:left;
+    max-width:900px; margin:0 auto;
+  }
+  .check-item{
+    display:flex; align-items:center; gap:12px;
+    background: rgba(255,255,255,0.06);
+    border-radius:12px; padding:16px 20px; font-size:15px; font-weight:500;
+  }
+  .check-item .dot{
+    flex:none; width:20px; height:20px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:800; color:#fff;
+  }
+  .check-item.c-red .dot{ background: var(--red); }
+  .check-item.c-blue .dot{ background: var(--blue); }
+
+  /* ===== ROADMAP ===== */
+  .roadmap-head{ margin-bottom:56px; }
+  .roadmap-head h2{ font-size:32px; font-weight:700; line-height:1.5; }
+  .roadmap-row{
+    display:flex; align-items:center; gap:56px;
+    padding: 40px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .roadmap-row:last-child{ border-bottom:none; }
+  .roadmap-row:nth-child(even){ flex-direction: row-reverse; }
+  .roadmap-text{ flex:1 1 380px; }
+  .roadmap-text h3{ font-size:22px; font-weight:700; margin-bottom:10px; }
+  .roadmap-text p{ font-size:15px; color:#555; margin-bottom:18px; line-height:1.6; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; }
+  .mini-tag{
+    background: var(--gray-100); border-radius:6px; padding:6px 12px;
+    font-size:13px; font-weight:600; color:#444;
+  }
+  .roadmap-img{
+    flex:1 1 380px;
+    border-radius:16px; overflow:hidden;
+    background: var(--gray-100);
+  }
+
+  /* ===== FEEDBACK (dark) ===== */
+  .feedback-section{ background: var(--black); color:#fff; text-align:center; }
+  .feedback-section .eyebrow{ color:#ff6b63; }
+  .feedback-section h2{ color:#fff; font-size:30px; font-weight:700; line-height:1.5; margin-bottom:48px; }
+  .feedback-compare{
+    display:flex; align-items:center; justify-content:center; gap:28px; flex-wrap:wrap;
+  }
+  .compare-card{
+    width:340px; text-align:left; background:#1c1c1c; border-radius:16px; overflow:hidden;
+  }
+  .compare-label{
+    padding:12px 18px; font-weight:700; font-size:14px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .compare-card.as-is .compare-label{ background:#3a1f1f; color:#ff8f87; }
+  .compare-card.to-be .compare-label{ background:#1f3a2b; color:#7fe0a0; }
+  .compare-body{ padding:18px; font-size:13px; color:#ccc; }
+  .compare-body .note{
+    background: rgba(255,255,255,0.06); border-radius:8px; padding:10px 12px; margin-bottom:8px;
+  }
+  .arrow-between{ font-size:28px; color:#666; }
+
+  /* ===== INSTRUCTOR ===== */
+  .instructor-section{ background: var(--dark-navy); color:#fff; }
+  .instructor-eyebrow{ text-align:center; color:#ff6b63; margin-bottom:8px; }
+  .instructor-quote{
+    text-align:center; font-size:26px; font-weight:700; line-height:1.5; margin-bottom:56px;
+  }
+  .instructor-card{
+    display:flex; gap:48px; align-items:flex-start; max-width:820px; margin:0 auto; flex-wrap:wrap;
+  }
+  .instructor-photo{
+    width:200px; height:240px; border-radius:14px; flex:none;
+    background: linear-gradient(160deg,#333,#111);
+    display:flex; align-items:center; justify-content:center; font-size:60px;
+  }
+  .instructor-info{ flex:1 1 320px; }
+  .instructor-info h3{ font-size:24px; font-weight:700; margin-bottom:6px; }
+  .instructor-badge{
+    display:inline-block; background: rgba(255,255,255,0.1); border-radius:6px;
+    padding:4px 10px; font-size:13px; color:#ccc; margin-bottom:22px;
+  }
+  .career-list{ display:flex; flex-direction:column; gap:12px; }
+  .career-row{ display:flex; gap:16px; font-size:14px; }
+  .career-row .tag-label{
+    flex:none; width:44px; color:#ff6b63; font-weight:700;
+  }
+  .career-row p{ color:#ddd; }
+
+  /* ===== PORTFOLIO (dark) ===== */
+  .portfolio-section{ background:#0a0a0a; color:#fff; text-align:center; }
+  .portfolio-section .eyebrow{ color:#ff6b63; }
+  .portfolio-section h2{ color:#fff; font-size:30px; font-weight:700; line-height:1.5; margin-bottom:48px; }
+  .phone-row{
+    display:flex; justify-content:center; align-items:flex-end; gap:20px; margin-bottom:56px; flex-wrap:wrap;
+  }
+  .phone-mock{
+    width:150px; height:300px; border-radius:22px;
+    background: linear-gradient(160deg,#1a1a2e,#0d0d1a);
+    border: 4px solid #222;
+  }
+  .phone-mock.tall{ height:340px; }
+  .cta-block{ margin-bottom:20px; }
+  .cta-block .eyebrow{ color: rgba(255,255,255,0.5); }
+  .cta-block h3{ font-size:26px; font-weight:700; margin-bottom:24px; }
+
+  /* ===== TESTIMONIALS ===== */
+  .testi-grid{
+    display:grid; grid-template-columns: repeat(3,1fr); gap:16px;
+  }
+  .testi-card{
+    background: var(--gray-100); border-radius:14px; padding:22px; text-align:center;
+  }
+  .testi-card .company{ font-weight:700; font-size:15px; margin-bottom:2px; }
+  .testi-card .role{ font-size:13px; color:#777; margin-bottom:10px; }
+  .testi-card .name{ font-size:14px; color:#444; }
+
+  /* ===== TRUST (KT cloud) ===== */
+  .trust-section{ background: var(--dark-navy); color:#fff; }
+  .trust-head{ text-align:center; margin-bottom:56px; }
+  .trust-head .eyebrow{ color:#ff6b63; }
+  .trust-head h2{ color:#fff; font-size:30px; font-weight:700; line-height:1.5; }
+  .trust-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:20px; }
+  .trust-card{ background: rgba(255,255,255,0.05); border-radius:16px; overflow:hidden; }
+  .trust-card .thumb{
+    height:150px; background: linear-gradient(160deg,#222,#0a0a0a);
+  }
+  .trust-card .body{ padding:22px; }
+  .trust-card .tiny-eyebrow{ color: var(--red); font-size:12px; font-weight:700; margin-bottom:8px; }
+  .trust-card h3{ font-size:17px; font-weight:700; margin-bottom:10px; line-height:1.4; }
+  .trust-card p{ font-size:13px; color:#aaa; line-height:1.6; }
+
+  /* ===== CTA BANNER ===== */
+  .cta-banner{
+    background:#000; color:#fff; text-align:center; padding: 64px 0;
+  }
+  .cta-banner .eyebrow{ color: rgba(255,255,255,0.5); }
+  .cta-banner h2{ font-size:28px; font-weight:700; margin-bottom:28px; }
+  .step-row{
+    display:flex; justify-content:center; align-items:center; gap:18px; margin-bottom:32px; flex-wrap:wrap;
+  }
+  .step-pill{
+    background: rgba(255,255,255,0.08); border-radius:999px; padding:10px 26px; font-weight:600; font-size:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .step-num{
+    width:20px; height:20px; border-radius:50%; background: var(--red);
+    display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+  }
+
+  /* ===== FAQ ===== */
+  .faq-head{ text-align:center; margin-bottom:40px; }
+  .faq-head h2{ font-size:30px; font-weight:700; }
+  .faq-tabs{ display:flex; justify-content:center; gap:10px; margin-bottom:32px; flex-wrap:wrap; }
+  .faq-tab{
+    padding:10px 20px; border-radius:999px; font-size:14px; font-weight:600;
+    background: var(--gray-100); color:#555;
+  }
+  .faq-tab.active{ background: var(--black); color:#fff; }
+  .faq-list{ max-width:800px; margin:0 auto; border-top:1px solid #eee; }
+  .faq-item{ border-bottom:1px solid #eee; }
+  .faq-q{
+    display:flex; align-items:center; gap:14px; padding:20px 4px; cursor:pointer; font-weight:600; font-size:16px;
+  }
+  .faq-q .qmark{
+    flex:none; width:26px; height:26px; border-radius:50%; background: var(--gray-100);
+    color: var(--red); font-weight:800; font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .faq-q .plus{ margin-left:auto; font-size:20px; color:#999; transition: transform .2s ease; }
+  .faq-item.open .plus{ transform: rotate(45deg); }
+  .faq-a{
+    display:none; padding: 0 4px 22px 44px; font-size:14px; color:#555; line-height:1.8;
+  }
+  .faq-item.open .faq-a{ display:block; }
+  .faq-a ul{ list-style:disc; padding-left:18px; }
+  .faq-a li{ margin-bottom:4px; }
+
+  /* ===== FOOTER ===== */
+  footer{ background:#0a0a0a; color: #999; padding: 56px 0 32px; }
+  .footer-top{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; margin-bottom:32px;
+  }
+  .footer-logo{ color:#fff; font-weight:800; font-size:20px; margin-bottom:10px; }
+  .footer-desc{ font-size:13px; max-width:340px; line-height:1.6; }
+  .footer-links{ display:flex; gap:24px; font-size:13px; flex-wrap:wrap; }
+  .footer-bottom{ border-top:1px solid #262626; padding-top:24px; font-size:12px; line-height:1.8; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px){
+    .problem-grid{ grid-template-columns:1fr; }
+    .check-grid{ grid-template-columns:1fr; }
+    .testi-grid{ grid-template-columns: repeat(2,1fr); }
+    .trust-grid{ grid-template-columns:1fr; }
+    .roadmap-row, .roadmap-row:nth-child(even){ flex-direction:column; }
+    .hero-tags{ display:none; }
+  }
+  @media (max-width: 640px){
+    nav.main-nav{ display:none; }
+    .header-cta > span{ display:none; }
+    .hero h1{ font-size:32px; }
+    .sphere{ width:260px; height:254px; bottom:-20px; right:-30px; top:auto; }
+    section{ padding:64px 0; }
+    h2.section-title, .skills-section h2, .roadmap-head h2, .feedback-section h2,
+    .portfolio-section h2, .trust-head h2, .cta-banner h2, .faq-head h2{ font-size:24px; }
+    .testi-grid{ grid-template-columns:1fr; }
+    .instructor-card{ flex-direction:column; align-items:center; text-align:center; }
+    .instructor-info{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo"><svg width="149" height="36" viewBox="0 0 149 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_2124_255)">
+<mask id="mask0_2124_255" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="149" height="36">
+<path d="M149 0H0V36H149V0Z" fill="white"/>
+</mask>
+<g mask="url(#mask0_2124_255)">
+<path d="M8.6677 20.2883H0V14.9529H23.8126V20.2883H15.1698V35.7041H8.66901V20.2883H8.6677Z" fill="#161616"/>
+<path d="M26.6455 14.9529H46.1728V20.141H33.1463V22.8094H43.956V27.4044H33.1463V30.5173H46.1728V35.7054H26.6455V14.9529Z" fill="#161616"/>
+<path d="M64.5189 27.6003H71.0197C71.0197 32.7385 66.6111 36 59.9137 36C52.5752 36 47.8481 31.8245 47.8481 25.3278C47.8481 18.8311 52.5766 14.6556 59.9137 14.6556C66.6111 14.6556 71.0197 17.9158 71.0197 23.0553H64.5189C64.2724 21.2273 62.6718 19.9924 59.8652 19.9924C56.369 19.9924 54.3738 21.919 54.3738 25.3041C54.3738 28.6892 56.5158 30.6646 60.0618 30.6646C62.7452 30.6646 64.2724 29.4297 64.5189 27.6016V27.6003Z" fill="#161616"/>
+<path d="M73.2378 14.9529H79.7386V22.2649H88.7511V14.9529H95.2518V35.7041H88.7511V27.6017H79.7386V35.7041H73.2378V14.9529Z" fill="#161616"/>
+<path d="M102.753 27.6003V14.9515H109.253V27.4517C109.253 29.4283 110.879 30.5146 113.809 30.5146C116.739 30.5146 118.341 29.4283 118.341 27.4517V14.9515H124.841V27.6003C124.841 32.9358 120.827 36 113.81 36C106.793 36 102.753 32.9371 102.753 27.6003Z" fill="#161616"/>
+<path d="M127.674 14.9529H141.662C146.192 14.9529 149 17.6449 149 22.0677C149 26.4904 146.045 29.7256 141.662 29.7256H134.176V35.7041H127.676V14.9529H127.674ZM139.74 24.6861C141.512 24.6861 142.498 23.8707 142.498 22.4872C142.498 21.1037 141.464 20.2883 139.74 20.2883H134.175V24.6861H139.74Z" fill="#161616"/>
+<path d="M9.48545 10.3881C9.21278 10.3881 8.97157 10.2658 8.78936 10.0343L7.71311 8.70475L6.21999 6.87017V9.8489C6.21999 10.1474 5.97878 10.3894 5.6812 10.3894H4.24707V0.668076C4.24707 0.369545 4.48828 0.127563 4.78455 0.127563H6.21999V5.63659L8.00413 3.4364C8.41706 2.95375 8.88374 2.74596 9.5641 2.74596H10.9091L8.05656 6.26916L10.158 8.85862L11.3981 10.3881H9.48545Z" fill="black"/>
+<path d="M6.09318 0.255133V5.99562L6.54544 5.43801L8.09886 3.52188C8.49213 3.06159 8.91687 2.87353 9.56445 2.87353H10.642L8.02414 6.1074L7.89305 6.26916L8.02414 6.43092L10.06 8.93885L11.131 10.2605H9.4858C9.25377 10.2605 9.04796 10.1553 8.88803 9.9528L7.81309 8.62322L6.54675 7.06612L6.09449 6.50983V9.84759C6.09449 10.0751 5.90965 10.2605 5.68418 10.2605H4.37721V0.668079C4.37721 0.440564 4.56073 0.255133 4.78752 0.255133H6.09449M6.34881 0H4.78621C4.42047 0 4.12158 0.298531 4.12158 0.668079V10.5144H5.68287C6.05123 10.5144 6.34881 10.2145 6.34881 9.84628V7.22657L7.61514 8.78366L8.69008 10.1119C8.90769 10.3868 9.19347 10.5144 9.4858 10.5144H11.6671L10.2579 8.77577L8.22209 6.26785L11.1782 2.61708H9.56576C8.84083 2.61708 8.34662 2.83934 7.90616 3.35486L6.34881 5.27625V0Z" fill="black"/>
+<path d="M14.2614 10.3881C13.1209 10.3881 12.354 9.62008 12.354 8.47592V0.668076C12.354 0.37086 12.5966 0.127563 12.8954 0.127563H14.3309V8.05509C14.3309 8.45751 14.656 8.78366 15.0545 8.78366H16.5188V9.84628C16.5188 10.1448 16.2763 10.3868 15.9787 10.3868H14.2614V10.3881Z" fill="black"/>
+<path d="M14.2038 0.255133V8.05509C14.2038 8.52722 14.5852 8.91123 15.0558 8.91123H16.393V9.84628C16.393 10.0738 16.2081 10.2592 15.9813 10.2592H14.2641C13.1996 10.2592 12.4838 9.54249 12.4838 8.47461V0.668079C12.4838 0.440564 12.67 0.256448 12.8981 0.256448H14.2064M14.4607 0.00131512H12.8981C12.5284 0.00131512 12.2295 0.299847 12.2295 0.669394V8.47593C12.2295 9.68452 13.0633 10.517 14.2641 10.517H15.9813C16.3497 10.517 16.6486 10.2171 16.6486 9.84891V8.65741H15.0572C14.7294 8.65741 14.4607 8.38781 14.4607 8.0564V0V0.00131512Z" fill="black"/>
+<path d="M16.9671 2.03711L16.8308 2.18177C16.8229 2.1844 16.4061 2.61445 15.2026 2.61445H9.52252C8.62586 2.61445 8.20375 2.98136 7.88126 3.37721L7.70298 3.59684C7.70298 3.59684 7.69381 3.60604 7.68987 3.6113L6.5625 5.0027C6.97281 4.69233 7.53519 4.5069 8.10805 4.5069H15.2026C16.0652 4.5069 16.8911 4.25045 16.9593 3.60473C16.9671 3.55344 16.9671 3.52056 16.9671 3.52056V2.03711Z" fill="#D83831"/>
+<path d="M20.4449 9.79887C19.9914 9.23205 19.7646 8.39695 19.7646 7.29357C19.7646 6.19019 20.0438 5.43399 20.6009 4.90269C21.1581 4.37138 21.9236 4.10573 22.8937 4.10573C23.6081 4.10573 24.0735 4.06233 24.2898 3.9729V5.03551C24.2898 5.1644 24.181 5.25514 23.966 5.30643C23.7484 5.35903 23.4285 5.38534 23.0025 5.38534C22.3602 5.38534 21.9013 5.54183 21.6234 5.85615C21.3468 6.17046 21.2092 6.65311 21.2092 7.30541C21.2092 8.68102 21.6981 9.37014 22.6774 9.37014C23.4233 9.37014 24.042 9.25309 24.531 9.02032V10.0106C24.531 10.1789 24.4458 10.3039 24.278 10.3854C24.1574 10.4577 23.9306 10.5196 23.5976 10.5722C23.2647 10.6248 22.9737 10.6511 22.7259 10.6511C21.6588 10.6511 20.8985 10.367 20.4462 9.80018L20.4449 9.79887Z" fill="#D83831"/>
+<path d="M26.0032 10.2224C25.7751 9.93698 25.6597 9.48852 25.6597 8.87568V1.7175C25.6597 1.48472 25.7803 1.36768 26.0202 1.36768H27.0794V8.86384C27.0794 9.23339 27.204 9.41882 27.4517 9.41882C27.6601 9.41882 27.8371 9.39909 27.9813 9.35832V10.1908C27.9813 10.2789 27.959 10.3539 27.9158 10.4144C27.8712 10.4749 27.8135 10.5169 27.7414 10.5406C27.5409 10.6129 27.3521 10.6498 27.1751 10.6498C26.6219 10.6498 26.2313 10.5064 26.0019 10.221L26.0032 10.2224Z" fill="#D83831"/>
+<path d="M29.3852 9.87782C28.8988 9.36229 28.6562 8.51799 28.6562 7.34227C28.6562 6.16656 28.8988 5.31831 29.3852 4.79489C29.8702 4.27147 30.5742 4.00977 31.497 4.00977C32.4199 4.00977 33.1252 4.27147 33.6155 4.79489C34.1044 5.31831 34.3496 6.16656 34.3496 7.34227C34.3496 8.51799 34.1057 9.36229 33.6155 9.87782C33.1252 10.392 32.4199 10.6498 31.497 10.6498C30.5742 10.6498 29.8702 10.392 29.3852 9.87782ZM32.5628 8.91121C32.7909 8.6061 32.9049 8.08268 32.9049 7.34227C32.9049 6.60186 32.7909 6.0745 32.5628 5.76019C32.3334 5.44587 31.9781 5.28937 31.497 5.28937C31.0159 5.28937 30.6619 5.44587 30.4377 5.76019C30.2136 6.0745 30.1009 6.60186 30.1009 7.34227C30.1009 8.08268 30.2123 8.6061 30.4377 8.91121C30.6619 9.21763 31.0159 9.37018 31.497 9.37018C31.9781 9.37018 32.3334 9.21763 32.5628 8.91121Z" fill="#D83831"/>
+<path d="M36.2018 10.1368C35.8007 9.79491 35.6001 9.26623 35.6001 8.54949V4.40819C35.6001 4.20698 35.7011 4.10571 35.9003 4.10571H37.0198V8.22203C37.0198 9.00321 37.341 9.3938 37.982 9.3938C38.2311 9.3938 38.4526 9.35303 38.6493 9.27281C38.8459 9.19258 39.0727 9.07159 39.3296 8.91115V5.55497C39.3296 5.16833 39.3414 4.87506 39.3663 4.67384C39.3899 4.47263 39.4358 4.32797 39.5053 4.23986C39.5735 4.15174 39.6757 4.10703 39.8121 4.10703H40.9303C40.8097 4.40556 40.7507 4.86322 40.7507 5.48396V10.1684C40.7507 10.4012 40.634 10.5182 40.402 10.5182H39.331V10.1566C39.0583 10.317 38.8092 10.4406 38.585 10.5248C38.3596 10.609 38.1039 10.6524 37.8142 10.6524C37.1404 10.6524 36.603 10.4814 36.2018 10.1395V10.1368Z" fill="#D83831"/>
+<path d="M42.6765 9.841C42.2662 9.3018 42.063 8.51273 42.063 7.4751C42.063 5.16576 43.0737 4.01109 45.0965 4.01109C45.4176 4.01109 45.7178 4.04791 45.9997 4.12024V2.81696C45.9997 2.42243 46.0115 2.12653 46.0351 1.93057C46.0587 1.73331 46.1019 1.58996 46.1675 1.50185C46.2317 1.41373 46.3366 1.36902 46.4808 1.36902H47.599C47.4797 1.65834 47.4194 2.11732 47.4194 2.74463V10.1698C47.4194 10.4026 47.2988 10.5196 47.0576 10.5196H45.9984V10.1698C45.5173 10.492 45.0073 10.6524 44.4698 10.6524C43.6833 10.6524 43.0855 10.3828 42.6765 9.84363V9.841ZM45.4504 9.22553C45.6864 9.12952 45.8699 9.00459 45.9984 8.85072V5.39854C45.7493 5.3262 45.4845 5.28938 45.204 5.28938C44.7071 5.28938 44.2994 5.43667 43.9835 5.72995C43.6663 6.02322 43.5076 6.6137 43.5076 7.49878C43.5076 8.10242 43.6204 8.56534 43.8445 8.88754C44.0687 9.20974 44.3899 9.37019 44.8067 9.37019C44.9995 9.37019 45.2144 9.32153 45.4504 9.22553Z" fill="#D83831"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_2124_255">
+<rect width="149" height="36" fill="white"/>
+</clipPath>
+</defs>
+</svg></div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#curriculum">웹개발 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 8L10 12L6 8" stroke="#363232" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a href="#curriculum">프로덕트 전문가 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 8L10 12L6 8" stroke="#363232" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a href="#instructor">인프라 / 혁신기술 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 8L10 12L6 8" stroke="#363232" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      </ul>
+    </nav>
+    <div class="header-cta">
+      <a href="#apply" class="btn-red">지원하기</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="sphere" src="plan.svg" alt="컬러풀한 행성 이미지">
+  <div class="wrap hero-inner">
+    <div class="hero-eyebrow">실무 중심의 Product Design</div>
+    <h1>실무에서 통하는<br>문제 정의부터 의사결정까지</h1>
+
+    <div class="hero-tags">
+      <span class="tag t-ai">AI</span>
+      <span class="tag t-ux">User Research</span>
+      <span class="tag t-ds">Design Sistem</span>
+    </div>
+
+    <a href="#apply" class="btn-red" style="width: 320px;">지원하기</a>
+
+    <dl class="hero-info">
+      <div>
+        <dt class="ico-clock"><span class="ico"></span>수강 기간</dt>
+        <dd>26. 06. 10 ~ 26. 12. 23</dd>
+      </div>
+      <div>
+        <dt class="ico-clock"><span class="ico"></span>모집 기간 (최대 50명)</dt>
+        <dd>26. 04. 09 ~ 26. 05. 25</dd>
+      </div>
+      <div>
+        <dt class="ico-clock"><span class="ico"></span>수업 시간</dt>
+        <dd>월-금 9 to 6 (ZEP)</dd>
+      </div>
+      <div>
+        <dt class="ico-money"><span class="ico"></span>수강료</dt>
+        <dd><small>18,566,400원</small> (60만원)</dd>
+      </div>
+    </dl>
+
+    <div class="hero-bottom-card">
+      <p>7개월 후, 실무에서 통하는<br>역량을 완성해요!</p>
+      <div class="capstack">
+        <div class="cap-item"><div class="cap-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 21C9 21.55 9.45 22 10 22H14C14.55 22 15 21.55 15 21V20H9V21ZM12 2C8.14 2 5 5.14 5 9C5 11.38 6.19 13.47 8 14.74V17C8 17.55 8.45 18 9 18H15C15.55 18 16 17.55 16 17V14.74C17.81 13.47 19 11.38 19 9C19 5.14 15.86 2 12 2ZM14.85 13.1L14 13.7V16H10V13.7L9.15 13.1C7.8 12.16 7 10.63 7 9C7 6.24 9.24 4 12 4C14.76 4 17 6.24 17 9C17 10.63 16.2 12.16 14.85 13.1Z" fill="white"/></svg></div><p>문제를 뾰족하게<br>정의하는 사고력</p></div>
+        <div class="cap-item"><div class="cap-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16ZM7 9H9V11H7V9ZM11 9H13V11H11V9ZM15 9H17V11H15V9Z" fill="white"/></svg></div><p>현직자의<br>실무 피드백</p></div>
+        <div class="cap-item"><div class="cap-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 13C11.67 13 17 14.34 17 17V20H1V17C1 14.34 6.33 13 9 13ZM16.6699 13.1299C19.4299 13.5299 23 14.82 23 17V20H19V17C19 15.32 18.0399 14.0599 16.6699 13.1299ZM9 15C6.30027 15 3.20056 16.2897 3 17.0098V18H15V17C14.8 16.29 11.7 15 9 15ZM9 4C11.21 4 13 5.79 13 8C13 10.21 11.21 12 9 12C6.79 12 5 10.21 5 8C5 5.79 6.79 4 9 4ZM15 4C17.21 4.00004 19 5.79003 19 8C19 10.21 17.21 12 15 12C14.53 12 14.0899 11.8998 13.6699 11.7598C14.4999 10.7298 15 9.41993 15 8C15 6.58007 14.4999 5.27021 13.6699 4.24023C14.0899 4.10023 14.53 4 15 4ZM9 6C7.9 6 7 6.9 7 8C7 9.1 7.9 10 9 10C10.1 10 11 9.1 11 8C11 6.9 10.1 6 9 6Z" fill="white"/></svg></div><p>타 직군과의<br>협업 프로젝트</p></div>
+        <div class="cap-item"><div class="cap-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 2H14.82C14.4 0.84 13.3 0 12 0C10.7 0 9.6 0.84 9.18 2H5C3.9 2 3 2.9 3 4V20C3 21.1 3.9 22 5 22H19C20.1 22 21 21.1 21 20V4C21 2.9 20.1 2 19 2ZM12 2C12.55 2 13 2.45 13 3C13 3.55 12.55 4 12 4C11.45 4 11 3.55 11 3C11 2.45 11.45 2 12 2ZM19 20H5V4H7V7H17V4H19V20Z" fill="white"/></svg></div><p>설득력 있는<br>포트폴리오</p></div>
+        <div class="cap-item"><div class="cap-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_2124_252)"><path d="M15.5 11C16.3284 11 17 10.3284 17 9.5C17 8.67157 16.3284 8 15.5 8C14.6716 8 14 8.67157 14 9.5C14 10.3284 14.6716 11 15.5 11Z" fill="white"/><path d="M8.5 11C9.32843 11 10 10.3284 10 9.5C10 8.67157 9.32843 8 8.5 8C7.67157 8 7 8.67157 7 9.5C7 10.3284 7.67157 11 8.5 11Z" fill="white"/><path d="M12 16C10.52 16 9.25 15.19 8.55 14H6.88C7.68 16.05 9.67 17.5 12 17.5C14.33 17.5 16.32 16.05 17.12 14H15.45C14.76 15.19 13.48 16 12 16ZM11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20Z" fill="white"/></g><defs><clipPath id="clip0_2124_252"><rect width="24" height="24" fill="white"/></clipPath></defs></svg></div><p>면접관을 사로 잡는<br>취업 경쟁력</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="tabnav" id="curriculum">
+  <ul>
+    <li><a href="#curriculum" class="active">교육소개</a></li>
+    <li><a href="#curriculum">커리큘럼</a></li>
+    <li><a href="#instructor">현직자 멘토링</a></li>
+    <li><a href="#portfolio">포트폴리오</a></li>
+    <li><a href="#trust">학습환경</a></li>
+    <li><a href="#testimonials">취업후기</a></li>
+  </ul>
+</nav>
+
+<!-- PROBLEM -->
+<section class="tight problem-wrap">
+  <div class="wrap">
+    <div class="problem-head">
+      <div class="eyebrow">내가 취업할 수 있을까?</div>
+      <h2>혼자 취업 준비하다 보면<br>이런 고민 한 번쯤 해보셨죠?</h2>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card">정보는 많은데, 어디서부터 시작해야 할지 모르겠어요...</div>
+      <div class="problem-card">피드백 받을 사람이 없어 혼자 준비하는데 한계를 느껴요..</div>
+      <div class="problem-card">왜 이렇게 디자인 했는지 논리적으로 설명하기 어려워요...</div>
+      <div class="problem-card">실무에서 원하는 역량을 내가 가지고있는지 모르겠어요...</div>
+    </div>
+  </div>
+</section>
+
+<!-- CORE SKILLS -->
+<section class="skills-section">
+  <div class="wrap">
+    <div class="eyebrow">기업이 원하는 핵심 역량</div>
+    <h2>지금 부족하다고 느끼는 역량도,<br>7개월 뒤에는 취업 경쟁력으로</h2>
+
+    <div class="pill-row">
+      <span class="pill">UX Reserch</span>
+      <span class="pill">다양한 직군과 협업</span>
+      <span class="pill">AI 활용 능력</span>
+      <span class="pill">분석 툴로 데이터 검증</span>
+      <span class="pill">디자인 시스템</span>
+    </div>
+
+    <div class="avatar-wrap">💻</div>
+
+    <div class="kt-lockup">
+      <span class="kt-logo">kt</span>
+      <h3>에서 이 모든 역량을 프로젝트를 통해 익혀요</h3>
+    </div>
+
+    <div class="check-grid">
+      <div class="check-item c-red"><span class="dot">✓</span>어디서부터 시작해야 할지 모르겠어요...</div>
+      <div class="check-item c-blue"><span class="dot">✓</span>성장 로드맵에 따라 체계적으로 학습하니 믿고 따라와요</div>
+      <div class="check-item c-red"><span class="dot">✓</span>혼자 준비하는 데 한계를 느껴요...</div>
+      <div class="check-item c-blue"><span class="dot">✓</span>현직 전문가의 피드백으로 개선 포인트를 명확히 짚어줘요</div>
+      <div class="check-item c-red"><span class="dot">✓</span>면접에서 프로젝트를 설명하기 어려워요...</div>
+      <div class="check-item c-blue"><span class="dot">✓</span>매월 자신의 프로젝트 PR 시간을 통해 면접 자신감 UP</div>
+      <div class="check-item c-red"><span class="dot">✓</span>실무에서 원하는 역량이 무엇인지 모르겠어요...</div>
+      <div class="check-item c-blue"><span class="dot">✓</span>타 직군과 협업으로 실무처럼 사고하는 방식을 가져요</div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section>
+  <div class="wrap">
+    <div class="roadmap-head center">
+      <div class="eyebrow">어떻게 시작할지 막막하셨죠?</div>
+      <h2>막막했던 취업 준비도,<br>하나씩 성장할 수 있어요</h2>
+    </div>
+
+    <div class="roadmap-row">
+      <div class="roadmap-text">
+        <h3>사용자의 진짜 문제를 이해할 수 있어요</h3>
+        <p>인터뷰와 리서치를 통해 사용자의 진짜 문제를 발견합니다.</p>
+        <div class="tag-row">
+          <span class="mini-tag">인터뷰</span>
+          <span class="mini-tag">Affinity</span>
+          <span class="mini-tag">페르소나</span>
+          <span class="mini-tag">유저저니 맵</span>
+        </div>
+      </div>
+      <img class="roadmap-img" src="https://placehold.co/560x340/f5f5f5/999999?text=User+Research" alt="사용자 리서치 화면">
+    </div>
+
+    <div class="roadmap-row">
+      <div class="roadmap-text">
+        <h3>근거를 바탕으로 해결 방안을 설계해요</h3>
+        <p>근거를 바탕으로 화면을 설계하고 사용성 테스트를 통해 개선합니다.</p>
+        <div class="tag-row">
+          <span class="mini-tag">IA 설계</span>
+          <span class="mini-tag">와이어프레임</span>
+          <span class="mini-tag">프로토타이핑</span>
+          <span class="mini-tag">UT</span>
+        </div>
+      </div>
+      <img class="roadmap-img" src="https://placehold.co/560x340/111111/eeeeee?text=Wireframe" alt="와이어프레임 화면">
+    </div>
+
+    <div class="roadmap-row">
+      <div class="roadmap-text">
+        <h3>협업하며 서비스를 완성해요</h3>
+        <p>다양한 직군과 협업하고 해커톤을 통해 서비스를 만들고 검증합니다.</p>
+        <div class="tag-row">
+          <span class="mini-tag">협업</span>
+          <span class="mini-tag">해커톤</span>
+          <span class="mini-tag">코드 리뷰</span>
+        </div>
+      </div>
+      <img class="roadmap-img" src="https://placehold.co/560x340/f5f5f5/999999?text=Team+Collaboration" alt="협업 사진">
+    </div>
+
+    <div class="roadmap-row">
+      <div class="roadmap-text">
+        <h3>내 프로젝트를 자신 있게 설명할 수 있어요!</h3>
+        <p>포트폴리오와 면접을 통해 취업을 준비합니다.</p>
+        <div class="tag-row">
+          <span class="mini-tag">포트폴리오</span>
+          <span class="mini-tag">면접</span>
+          <span class="mini-tag">이력서</span>
+        </div>
+      </div>
+      <img class="roadmap-img" src="https://placehold.co/560x340/111111/eeeeee?text=Portfolio" alt="포트폴리오 화면">
+    </div>
+  </div>
+</section>
+
+<!-- FEEDBACK -->
+<section class="feedback-section">
+  <div class="wrap">
+    <div class="eyebrow">혼자서는 놓치기 쉬운 부족한 부분을</div>
+    <h2>현직자의 1:1피드백으로<br>실무 기준에 맞게 개선해요</h2>
+
+    <div class="feedback-compare">
+      <div class="compare-card as-is">
+        <div class="compare-label">As-Is</div>
+        <div class="compare-body">
+          <div class="note">사용자 관점에서 생각해봐야 해요</div>
+          <div class="note">발화 근거가 부족해요</div>
+        </div>
+      </div>
+      <div class="arrow-between">→</div>
+      <div class="compare-card to-be">
+        <div class="compare-label">To-Be</div>
+        <div class="compare-body">
+          <div class="note">페르소나 수정</div>
+          <div class="note">탐색 디테일 추가</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTRUCTOR -->
+<section class="instructor-section" id="instructor">
+  <div class="wrap">
+    <div class="instructor-eyebrow eyebrow">강사의 한마디</div>
+    <p class="instructor-quote">"실무 기준으로 사고하고<br>설명할 수 있도록 함께 성장시키겠습니다"</p>
+
+    <div class="instructor-card">
+      <div class="instructor-photo">🧑‍💼</div>
+      <div class="instructor-info">
+        <h3>권진석</h3>
+        <span class="instructor-badge">전담 프로덕트 디자인 강사</span>
+        <div class="career-list">
+          <div class="career-row"><span class="tag-label">현재</span><p>KT Cloud TECH UP 프로덕트 디자인 강사</p></div>
+          <div class="career-row"><span class="tag-label">이전</span><p>스위치원 프로덕트 리드</p></div>
+          <div class="career-row"><span class="tag-label">이전</span><p>피플스헬스 Chief Product Officer</p></div>
+          <div class="career-row"><span class="tag-label">이전</span><p>Awair Principal Product Designer / Product Manager (미국 샌프란시스코)</p></div>
+          <div class="career-row"><span class="tag-label">이전</span><p>고위드 Product Designer</p></div>
+          <div class="career-row"><span class="tag-label">이전</span><p>Rocket Companies UI Designer (미국 디트로이트)</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio-section" id="portfolio">
+  <div class="wrap">
+    <div class="eyebrow">사용자 문제를 정의하는 것부터,</div>
+    <h2>의사결정의 근거를 담은 포트폴리오</h2>
+
+    <div class="phone-row">
+      <div class="phone-mock"></div>
+      <div class="phone-mock tall"></div>
+      <div class="phone-mock"></div>
+      <div class="phone-mock tall"></div>
+    </div>
+
+    <div class="cta-block">
+      <div class="eyebrow">혼자 준비하는 포트폴리오는 끝</div>
+      <h3>실무에서 통하는<br>취업 경쟁력을 완성해요.</h3>
+      <a href="#apply" class="btn-red">지원하기</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="tight" id="testimonials">
+  <div class="wrap">
+    <div class="testi-grid">
+      <div class="testi-card"><div class="company">오늘의 집</div><div class="role">UXUI 디자이너</div><div class="name">김*영</div></div>
+      <div class="testi-card"><div class="company">쿠팡</div><div class="role">프로덕트 디자이너</div><div class="name">김*영</div></div>
+      <div class="testi-card"><div class="company">무신사</div><div class="role">UX 디자이너</div><div class="name">김*영</div></div>
+      <div class="testi-card"><div class="company">왓챠</div><div class="role">프로덕트 디자이너</div><div class="name">김*영</div></div>
+      <div class="testi-card"><div class="company">잇올</div><div class="role">UXUI 디자이너</div><div class="name">김*영</div></div>
+      <div class="testi-card"><div class="company">컬리</div><div class="role">UXUI 디자이너</div><div class="name">김*영</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust-section" id="trust">
+  <div class="wrap">
+    <div class="trust-head">
+      <div class="eyebrow">왜 믿어야하지?</div>
+      <h2>KT가 주관하고 구름이 운영하니까<br>끝까지 책임지는 학습 환경</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="thumb"></div>
+        <div class="body">
+          <div class="tiny-eyebrow">실시간 협업</div>
+          <h3>타 직군과 실시간으로 협업하는 온라인 워크스페이스</h3>
+          <p>기획·디자인·개발 9개 직군이 한 팀으로, 실제 회사처럼 함께 프로젝트를 만들며 몰입할 수 있는 공간을 만듭니다.</p>
+        </div>
+      </div>
+      <div class="trust-card">
+        <div class="thumb"></div>
+        <div class="body">
+          <div class="tiny-eyebrow">학습 관리</div>
+          <h3>놓친 강의도 다시 듣고 매일 기록으로 배움 쌓기</h3>
+          <p>놓쳤던 모든 강의는 다시 볼 수 있고, 배움일기·미션으로 학습이 쌓여 혼자여도 끝까지 따라갈 수 있습니다.</p>
+        </div>
+      </div>
+      <div class="trust-card">
+        <div class="thumb"></div>
+        <div class="body">
+          <div class="tiny-eyebrow">KT 및 업계 현직자 특강</div>
+          <h3>매월 전문가 초빙으로 실무자 시선의 인사이트 발견</h3>
+          <p>업계 전문가들이 직접 전하는 생생한 현장 사례와 실무자 시선의 인사이트 제공</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-banner" id="apply">
+  <div class="wrap">
+    <div class="eyebrow">선발 절차</div>
+    <h2>지원 후, 합격 발표까지 5일!</h2>
+    <div class="step-row">
+      <div class="step-pill"><span class="step-num">1</span>Portfolio Battle</div>
+      <div class="step-pill"><span class="step-num">2</span>Hidden Gem</div>
+    </div>
+    <a href="#" class="btn-red">지원하기</a>
+    <p style="margin-top:18px; font-size:13px; color:#888;">가지고 있는 프로젝트와 포트폴리오로 제출하기</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="wrap">
+    <div class="faq-head">
+      <div class="eyebrow">자주 묻는 질문</div>
+      <h2>궁금한 점이 있으세요?</h2>
+    </div>
+
+    <div class="faq-tabs">
+      <span class="faq-tab active">모집 및 선발</span>
+      <span class="faq-tab">훈련 및 수강</span>
+      <span class="faq-tab">국민내일배움카드</span>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item open">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span class="qmark">Q</span>지원 대상은 어떻게 되나요?<span class="plus">+</span>
+        </div>
+        <div class="faq-a">
+          <ul>
+            <li>(필수) 국민내일배움카드를 보유하고 있거나 발급 가능한 분</li>
+            <li>내일배움카드 지원금 잔액이 1원 이상 남으신 분</li>
+            <li>국내 거주중이며, 훈련 기간 내 해외 거주 계획이 없으신 분</li>
+            <li>최근 5년 이내의 K-Digital Training(KDT) 참여 이력이 없으신 분</li>
+            <li>단, KDT 참여 이력이 있는 경우, 재참여 시 전액 자부담입니다.</li>
+          </ul>
+          <p style="margin-top:10px;">고용노동부 1350, 고용24 에서 카드 발급 자격 확인이 가능합니다.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span class="qmark">Q</span>교육일정은 어떻게 되나요?<span class="plus">+</span>
+        </div>
+        <div class="faq-a"><p>모집 기간, 수강 기간 등 상세 일정은 상단 안내를 참고해 주세요.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span class="qmark">Q</span>지원 프로세스가 어떻게 진행되나요?<span class="plus">+</span>
+        </div>
+        <div class="faq-a"><p>지원서 제출 후 서류 심사와 선발 절차를 거쳐 5일 이내 합격 여부를 안내드립니다.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span class="qmark">Q</span>지원 접수 확인은 어떻게 하나요?<span class="plus">+</span>
+        </div>
+        <div class="faq-a"><p>지원 완료 시 입력하신 연락처 또는 이메일로 접수 확인 안내를 드립니다.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span class="qmark">Q</span>지원서 수정이 가능한가요?<span class="plus">+</span>
+        </div>
+        <div class="faq-a"><p>모집 마감 전까지는 지원서 재작성을 통한 수정이 가능합니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">TECH UP</div>
+        <p class="footer-desc">TECH UP은 kt cloud가 만든 디지털 실무 인재 육성 프로그램 입니다.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#curriculum">교육소개</a>
+        <a href="#curriculum">커리큘럼</a>
+        <a href="#instructor">현직자 멘토링</a>
+        <a href="#portfolio">포트폴리오</a>
+        <a href="#trust">학습환경</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>개인정보처리방침 &nbsp;|&nbsp; 고객센터: 평일 10:30 - 17:00 (휴게 시간 12:00 - 13:30, 주말 및 공휴일 휴무)</p>
+      <p>Copyright© 2025 kt cloud corp. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
